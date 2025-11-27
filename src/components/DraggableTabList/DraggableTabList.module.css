@@ -1,0 +1,16 @@
+.row {
+    display: grid;
+    grid-template-columns: repeat(2, 40px 2fr);
+    column-gap: 20px;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.team span {
+    text-align: left;
+    min-width: 200px;
+}

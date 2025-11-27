@@ -7,3 +7,13 @@ Things I want to do:
 - Show minimal stats/info for each team
 - Be mindful of leagues that experience relegation/promotions? Perhaps we ignore promotions initially and only focus on the top flight per country
 - Create a "season simulation" based on collated responses
+
+Components: dropdown, grid for league table
+Technologies/Libraries to look into: 
+- BetterAuth, 
+- ShadCn, 
+- Clerk
+- Posthog for analytics
+- bun over pnpm?
+- something for captcha/rate limiting: botid, turnstyle, hCaptcha
+- stripe-recommendations->t3dotgg

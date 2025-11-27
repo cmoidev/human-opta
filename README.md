@@ -10,10 +10,15 @@ Things I want to do:
 
 Components: dropdown, grid for league table
 Technologies/Libraries to look into: 
-- BetterAuth, 
-- ShadCn, 
-- Clerk
+- BetterAuth, Clerk, workos
+- Tailwind + ShadCn
 - Posthog for analytics
 - bun over pnpm?
-- something for captcha/rate limiting: botid, turnstyle, hCaptcha
+- Vercel
+- something for captcha/rate limiting: botid, turnstyle, hCaptcha, arcjet
 - stripe-recommendations->t3dotgg
+- React Native + Expo
+- CodeRabbit
+- DB: MySQL or Postgres
+- API: trpc, orpc
+- DB host: PlanetScale

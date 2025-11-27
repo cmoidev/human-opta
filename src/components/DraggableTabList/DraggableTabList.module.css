@@ -8,9 +8,19 @@
     display: flex;
     align-items: center;
     gap: 2px;
+    cursor: move;
+    cursor: grab;
+}
+
+.team:active {
+    cursor: grabbing;
 }
 
 .team span {
     text-align: left;
     min-width: 200px;
+}
+
+.selected {
+    background-color: #b76868;
 }

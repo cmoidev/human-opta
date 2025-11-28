@@ -12,7 +12,7 @@ function DraggableTabList({ values }: { values: Teams }) {
   const id = React.useId();
   const [activeTab, setActiveTab] = React.useState<string | null>(null);
 
-  if (Object.keys(values).length === 0) {
+  if (values.length === 0) {
     return <div>No teams found</div>;
   }
 
@@ -26,7 +26,7 @@ function DraggableTabList({ values }: { values: Teams }) {
       </thead>
       <tbody>
         <TabContainer>
-          {Object.entries(values).map(([name, { position, color }], index) => {
+          {values.map(({ name, position, color }, index) => {
             return (
               <Tab
                 key={`${id}-${name}`}

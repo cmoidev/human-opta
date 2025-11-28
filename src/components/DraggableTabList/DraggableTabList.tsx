@@ -3,7 +3,10 @@ import { type Teams } from "../../db/leagues";
 import styles from "./DraggableTabList.module.css";
 import { SoccerBallIcon } from "@phosphor-icons/react";
 import invariant from "tiny-invariant";
-import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+  draggable,
+  dropTargetForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 function DraggableTabList({ values }: { values: Teams }) {
   const id = React.useId();
@@ -22,22 +25,40 @@ function DraggableTabList({ values }: { values: Teams }) {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(values).map(([name, { position, color }], index) => {
-          return (
-            <Tab
-              key={`${id}-${name}`}
-              name={name}
-              position={position ?? index + 1}
-              color={color}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-          );
-        })}
+        <TabContainer>
+          {Object.entries(values).map(([name, { position, color }], index) => {
+            return (
+              <Tab
+                key={`${id}-${name}`}
+                name={name}
+                position={position ?? index + 1}
+                color={color}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+              />
+            );
+          })}
+        </TabContainer>
       </tbody>
     </table>
   );
 }
+
+const TabContainer = ({ children }: { children: React.ReactNode }) => {
+  const ref = React.useRef<HTMLTableRowElement>(null);
+  const [isDraggedOver, setIsDraggedOver] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    const element = ref.current;
+    invariant(element, "tab container ref not set correctly");
+    return dropTargetForElements({
+      element,
+      onDragEnter: () => setIsDraggedOver(true),
+      onDragLeave: () => setIsDraggedOver(false),
+      onDrop: () => setIsDraggedOver(false),
+    });
+  }, []);
+  return <div ref={ref}>{children}</div>;
+};
 
 const Tab = ({
   name,
@@ -57,11 +78,11 @@ const Tab = ({
 
   React.useEffect(() => {
     const element = ref.current;
-    invariant(element, "element does not exist");
+    invariant(element, "tab ref not set correctly");
     return draggable({
       element,
       onDragStart: () => setDragging(true),
-      onDrag: () => setDragging(false),
+      onDrop: () => setDragging(false),
     });
   }, []);
 

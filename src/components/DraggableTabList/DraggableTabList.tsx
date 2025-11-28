@@ -24,28 +24,26 @@ function DraggableTabList({ values }: { values: Teams }) {
           <th style={{ textAlign: "left" }}>Team</th>
         </tr>
       </thead>
-      <tbody>
-        <TabContainer>
-          {values.map(({ name, position, color }, index) => {
-            return (
-              <Tab
-                key={`${id}-${name}`}
-                name={name}
-                position={position ?? index + 1}
-                color={color}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-              />
-            );
-          })}
-        </TabContainer>
-      </tbody>
+      <TabContainer>
+        {values.map(({ name, position, color }, index) => {
+          return (
+            <Tab
+              key={`${id}-${name}`}
+              name={name}
+              position={position ?? index + 1}
+              color={color}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          );
+        })}
+      </TabContainer>
     </table>
   );
 }
 
 const TabContainer = ({ children }: { children: React.ReactNode }) => {
-  const ref = React.useRef<HTMLTableRowElement>(null);
+  const ref = React.useRef<HTMLTableSectionElement>(null);
   const [isDraggedOver, setIsDraggedOver] = React.useState<boolean>(false);
   React.useEffect(() => {
     const element = ref.current;
@@ -57,7 +55,7 @@ const TabContainer = ({ children }: { children: React.ReactNode }) => {
       onDrop: () => setIsDraggedOver(false),
     });
   }, []);
-  return <div ref={ref}>{children}</div>;
+  return <tbody ref={ref}>{children}</tbody>;
 };
 
 const Tab = ({

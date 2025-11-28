@@ -2,31 +2,12 @@ import * as React from "react";
 import { type Teams } from "../../db/leagues";
 import styles from "./DraggableTabList.module.css";
 import { SoccerBallIcon } from "@phosphor-icons/react";
+import invariant from "tiny-invariant";
+import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 
 function DraggableTabList({ values }: { values: Teams }) {
   const id = React.useId();
-  const [selectedTab, setSelectedTab] = React.useState<string | null>(null);
-
-  const selectedTabRef = React.useRef<string | null>(selectedTab);
-
-  React.useEffect(() => {
-    selectedTabRef.current = selectedTab;
-    console.log(selectedTabRef.current);
-  }, [selectedTab]);
-
-  React.useEffect(() => {
-    function handleMouseMove(e: MouseEvent) {
-      if (selectedTabRef.current) {
-        console.log("clicking on tab", selectedTabRef.current);
-      }
-    }
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  console.log(selectedTab, "selected tab");
+  const [activeTab, setActiveTab] = React.useState<string | null>(null);
 
   if (Object.keys(values).length === 0) {
     return <div>No teams found</div>;
@@ -48,8 +29,8 @@ function DraggableTabList({ values }: { values: Teams }) {
               name={name}
               position={position ?? index + 1}
               color={color}
-              selectedTab={selectedTab}
-              setSelectedTab={setSelectedTab}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
             />
           );
         })}
@@ -62,26 +43,42 @@ const Tab = ({
   name,
   position,
   color,
-  selectedTab,
-  setSelectedTab,
+  activeTab,
+  setActiveTab,
 }: {
   name: string;
   position: number;
   color: string;
-  selectedTab: string | null;
-  setSelectedTab: (name: string) => void;
+  activeTab: string | null;
+  setActiveTab: (name: string) => void;
 }) => {
+  const ref = React.useRef<HTMLTableRowElement>(null);
+  const [dragging, setDragging] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const element = ref.current;
+    invariant(element, "element does not exist");
+    return draggable({
+      element,
+      onDragStart: () => setDragging(true),
+      onDrag: () => setDragging(false),
+    });
+  }, []);
+
   return (
     <tr
+      ref={ref}
       onMouseDown={() => {
-        setSelectedTab(name);
+        setActiveTab(name);
       }}
-      className={styles.row}
+      className={`${styles.row} ${
+        position % 2 === 0 ? styles.even : styles.odd
+      } ${dragging ? styles.draggedRow : ""}`}
     >
       <td>{position}</td>
       <td
         className={`${styles.team} ${
-          selectedTab === name ? styles.selected : ""
+          activeTab === name ? styles.draggable : ""
         }`}
       >
         <SoccerBallIcon color={color} />

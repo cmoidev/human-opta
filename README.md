@@ -5,6 +5,7 @@ Accessibility
 - on tabbing you should be able to tab through the teams
 - when you're on a team, using the up and down arrow keys you can update the team's position
 
+Internationalization?
 
 Things I want to do:
 

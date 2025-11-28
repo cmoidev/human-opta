@@ -21,6 +21,18 @@
     min-width: 200px;
 }
 
-.selected {
+.draggable {
     background-color: #b76868;
+}
+
+.even {
+    background-color: hsl(9, 39%, 86%);
+} 
+
+.odd {
+    background-color: hsl(87, 4%, 48%);
+}
+
+.dragged-row {
+    opacity: 0.8;
 }
